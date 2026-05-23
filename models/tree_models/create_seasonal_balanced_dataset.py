@@ -4,9 +4,10 @@ import xarray as xr
 from config.data.features_config import features
 from config.hyperparameters.tree_models import lags
 from config.data.split_seasonal_year_config import *
+# from config.data.split_next_year_test_config import test_blocks
 
 path_selected = '../../data/preprocessed/year/selected/'
-
+# path_selected = '../../data/preprocessed/next_year_test/selected/'
 # ============= paths =======================
 
 # year base !!!
@@ -16,10 +17,24 @@ path_selected = '../../data/preprocessed/year/selected/'
 # path_processed = '../../data/tree_models/seasonal_year/spatial/processed/'
 
 # year temporal !!!
-path_processed = '../../data/tree_models/seasonal_year/temporal/processed/'
+# path_processed = '../../data/tree_models/seasonal_year/temporal/processed/'
 
 # year spatiotemporal !!!
-# path_processed = '../../data/tree_models/seasonal_year/spatiotemporal/processed/'
+path_processed = '../../data/tree_models/seasonal_year/spatiotemporal/processed/'
+
+
+# 2021 test
+# year base !!!
+# path_processed = '../../data/tree_models/next_year_test/base/processed/'
+
+# year spatial !!!
+# path_processed = '../../data/tree_models/next_year_test/spatial/processed/'
+
+# year temporal !!!
+# path_processed = '../../data/tree_models/next_year_test/temporal/processed/'
+
+# year spatiotemporal !!!
+# path_processed = '../../data/tree_models/next_year_test/spatiotemporal/processed/'
 
 #===========functions =========================
 def create_block_lags(ds, target, time_blocks):
@@ -98,17 +113,17 @@ X_test, y_test, T_test, _, _ = flatten_data(X_test, y_test)
 
 # ========= add extra features ================
 # add coordinates features (spatial)
-# lats = ds_wrf.lat.isel(time=0).values # shape = (H, W)
-# lons = ds_wrf.lon.isel(time=0).values
-#
-# lat_flatten = lats.flatten() # shape = (H*W, )
-# lon_flatten = lons.flatten()
-#
-# X_train = add_coords(X_train, lat_flatten, lon_flatten, T_train)
-# X_val = add_coords(X_val, lat_flatten, lon_flatten, T_val)
-# X_test = add_coords(X_test, lat_flatten, lon_flatten, T_test)
+lats = ds_wrf.lat.isel(time=0).values # shape = (H, W)
+lons = ds_wrf.lon.isel(time=0).values
 
-# # add time and day features (temporal)
+lat_flatten = lats.flatten() # shape = (H*W, )
+lon_flatten = lons.flatten()
+
+X_train = add_coords(X_train, lat_flatten, lon_flatten, T_train)
+X_val = add_coords(X_val, lat_flatten, lon_flatten, T_val)
+X_test = add_coords(X_test, lat_flatten, lon_flatten, T_test)
+
+# add time and day features (temporal)
 hour_sin_train = ds_wrf.hour_sin.sel(time=time_rf_train).values
 hour_cos_train = ds_wrf.hour_cos.sel(time=time_rf_train).values
 

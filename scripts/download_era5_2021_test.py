@@ -27,13 +27,13 @@ PRESSURE_LEVELS = [
     "500", "400", "300", "250", "200", "100"
 ]
 
-os.makedirs("../data/ERA5/next_year/pressure", exist_ok=True)
-os.makedirs("../data/ERA5/next_year/surface", exist_ok=True)
+os.makedirs("../data/ERA5/next_year_test/pressure", exist_ok=True)
+os.makedirs("../data/ERA5/next_year_test/surface", exist_ok=True)
 # =========================
 # PRESSURE LEVELS
 # =========================
 
-filename = f"../data/ERA5/next_year/pressure/ERA5_pressure_{YEAR}_{MONTH}_second_half.grib"
+filename = f"../data/ERA5/next_year_test/pressure/ERA5_pressure_{YEAR}_{MONTH}_second_half.grib"
 
 if not os.path.exists(filename):
     print(f"Downloading pressure levels for {YEAR}-{MONTH}...")
@@ -65,7 +65,7 @@ else:
 # SURFACE LEVELS
 # =========================
 
-filename = f"../data/ERA5/next_year/surface/ERA5_surface_{YEAR}_{MONTH}_second_half.grib"
+filename = f"../data/ERA5/next_year_test/surface/ERA5_surface_{YEAR}_{MONTH}_second_half.grib"
 
 if not os.path.exists(filename):
     print(f"Downloading surface levels for {YEAR}-{MONTH}...")

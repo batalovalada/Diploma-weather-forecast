@@ -5,25 +5,47 @@ import copy
 from config.data.features_config import features, spatial_features, temporal_features
 from config.data.split_seasonal_year_config import *
 
+# from config.data.split_seasonal_year_config import train_blocks
+# from config.data.split_next_year_test_config import test_blocks
+
 path_selected = '../../data/preprocessed/year/selected/'
+# path_selected_test = '../../data/preprocessed/next_year_test/selected/'
 
 # year base
 # path_norm = '../../data/ConvLSTM/seasonal_year/base/norm_params/'
 # path_processed = '../../data/ConvLSTM/seasonal_year/base/processed/'
 
 # year spatial
-# path_norm = '../../data/ConvLSTM/seasonal_year/spatial/norm_params/'
-# path_processed = '../../data/ConvLSTM/seasonal_year/spatial/processed/'
+path_norm = '../../data/ConvLSTM/seasonal_year/spatial/norm_params/'
+path_processed = '../../data/ConvLSTM/seasonal_year/spatial/processed/'
 
 # year temporal
-path_norm = '../../data/ConvLSTM/seasonal_year/temporal/norm_params/'
-path_processed = '../../data/ConvLSTM/seasonal_year/temporal/processed/'
+# path_norm = '../../data/ConvLSTM/seasonal_year/temporal/norm_params/'
+# path_processed = '../../data/ConvLSTM/seasonal_year/temporal/processed/'
 
 # year spatiotemporal
 # path_norm = '../../data/ConvLSTM/seasonal_year/spatiotemporal/norm_params/'
 # path_processed = '../../data/ConvLSTM/seasonal_year/spatiotemporal/processed/'
 
 
+
+
+# 2021 test data
+# year base
+# path_norm = '../../data/ConvLSTM/next_year_test/base/norm_params/'
+# path_processed = '../../data/ConvLSTM/next_year_test/base/processed/'
+
+# year spatial
+# path_norm = '../../data/ConvLSTM/next_year_test/spatial/norm_params/'
+# path_processed = '../../data/ConvLSTM/next_year_test/spatial/processed/'
+
+# year temporal
+# path_norm = '../../data/ConvLSTM/next_year_test/temporal/norm_params/'
+# path_processed = '../../data/ConvLSTM/next_year_test/temporal/processed/'
+
+# year spatiotemporal
+# path_norm = '../../data/ConvLSTM/next_year_test/spatiotemporal/norm_params/'
+# path_processed = '../../data/ConvLSTM/next_year_test/spatiotemporal/processed/'
 # ======= parameters ================================================
 lookback = 4
 horizon = 1
@@ -60,13 +82,19 @@ def create_blocks_sequences(X, y, mask, time_blocks, lookback, horizon):
 ds_wrf = xr.open_dataset(path_selected+'ds_selected_wrf.nc')
 ds_era5 = xr.open_dataset(path_selected+'ds_selected_era5.nc')
 
+# ds_wrf_test = xr.open_dataset(path_selected_test+'ds_selected_wrf.nc')
+# ds_era5_test = xr.open_dataset(path_selected_test+'ds_selected_era5.nc')
+
 # to choose, what dataset do you need:
 # base
 # ds_wrf = ds_wrf.drop_vars(spatial_features+temporal_features)
+# ds_wrf_test = ds_wrf_test.drop_vars(spatial_features+temporal_features)
 # spatial
-# ds_wrf = ds_wrf.drop_vars(temporal_features)
+ds_wrf = ds_wrf.drop_vars(temporal_features)
+# ds_wrf_test = ds_wrf_test.drop_vars(temporal_features)
 # # temporal
-ds_wrf = ds_wrf.drop_vars(spatial_features)
+# ds_wrf = ds_wrf.drop_vars(spatial_features)
+# ds_wrf_test = ds_wrf_test.drop_vars(spatial_features)
 # spatiotemporal - nothing
 
 # creating X, y with train, val, test ======================================
@@ -75,6 +103,12 @@ y_ds = ds_era5['t2m'] - ds_wrf['T2']
 
 y_mask = (~np.isnan(y_ds)) # -> loss
 y_ds = y_ds.fillna(0) # y_ds has nan
+
+# X_test = ds_wrf_test
+# y_test = ds_era5_test['t2m'] - ds_wrf_test['T2']
+#
+# y_mask_test = (~np.isnan(y_test)) # -> loss
+# y_test = y_test.fillna(0) # y_ds has nan
 
 # ========================== normalize =======================================
 # select train data to define mean, std
@@ -102,10 +136,10 @@ X_all = X_ds.to_array().transpose("time","variable","south_north","west_east")
 X_all.loc[dict(variable=features)] = normalize(X_all.sel(variable=features), X_mean, X_std)
 
 # normalize separated spatial features (comment if dataset is base/temporal)
-# X_spatial_mean = X_train_blocks.sel(variable=spatial_features).mean(dim=['time', 'south_north', 'west_east'])
-# X_spatial_std = X_train_blocks.sel(variable=spatial_features).std(dim=['time', 'south_north', 'west_east'])
-#
-# X_all.loc[dict(variable=spatial_features)] = normalize(X_all.sel(variable=spatial_features), X_spatial_mean, X_spatial_std)
+X_spatial_mean = X_train_blocks.sel(variable=spatial_features).mean(dim=['time', 'south_north', 'west_east'])
+X_spatial_std = X_train_blocks.sel(variable=spatial_features).std(dim=['time', 'south_north', 'west_east'])
+
+X_all.loc[dict(variable=spatial_features)] = normalize(X_all.sel(variable=spatial_features), X_spatial_mean, X_spatial_std)
 
 # normalize target
 y_all = normalize(y_ds, y_mean, y_std)
@@ -119,6 +153,9 @@ X_test_seq, y_test_seq, mask_test_seq, time_test_seq  = create_blocks_sequences(
 # T2 wrf, era5 to ndarray for check model result ============================
 t2_wrf= ds_wrf.sel(time=time_test_seq)['T2'].values
 t2_era5 = ds_era5.sel(time=time_test_seq)['t2m'].values
+
+# t2_wrf= ds_wrf_test.sel(time=time_test_seq)['T2'].values
+# t2_era5 = ds_era5_test.sel(time=time_test_seq)['t2m'].values
 
 # ========================= save normalize parameters ====================
 norm_params_X = {

@@ -14,12 +14,20 @@ from config.data.features_config import features
 # paths_surface = sorted(glob.glob('../data/ERA5/year/surface/ERA5_surface_*.grib'))
 
 # month !!!!!!
-from config.data.split_month_config import *
-path_full = '../data/preprocessed/month/full/'
-path_selected = '../data/preprocessed/month/selected/'
-path_t2m = '../data/preprocessed/month/t2m/'
-path_wrf = sorted(glob.glob("../data/WRF_output/month/wrfout_d01_*"))
-paths_surface = sorted(glob.glob('../data/ERA5/month/surface/ERA5_surface_*.grib'))
+# from config.data.split_month_config import *
+# path_full = '../data/preprocessed/month/full/'
+# path_selected = '../data/preprocessed/month/selected/'
+# path_t2m = '../data/preprocessed/month/t2m/'
+# path_wrf = sorted(glob.glob("../data/WRF_output/month/wrfout_d01_*"))
+# paths_surface = sorted(glob.glob('../data/ERA5/month/surface/ERA5_surface_*.grib'))
+
+# year 2021 (only for tests)
+from config.data.split_year_config import *
+path_full = '../data/preprocessed/next_year_test/full/'
+path_selected = '../data/preprocessed/next_year_test/selected/'
+path_t2m = '../data/preprocessed/next_year_test/t2m/'
+path_wrf = sorted(glob.glob("../data/WRF_output/next_year_test/wrfout_d01_*"))
+paths_surface = sorted(glob.glob('../data/ERA5/next_year_test/surface/ERA5_surface_*.grib'))
 
 # create dataset from .grib files function
 def create_dataset_era5(paths, filter_arg):

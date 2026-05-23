@@ -5,9 +5,8 @@ scripts/config.sh
 # files like wrfout_d01_2020-01-01_00:00:00
 data/WRF_output/*
 data/preprocessed/month/full/df_full_wrf.parquet
-data/preprocessed/month/full/ds_full_wrf.nc
 data/preprocessed/year/full/df_full_wrf.parquet
-data/preprocessed/year/full/ds_full_wrf.nc
+data/preprocessed/next_year_test/full/df_full_wrf.parquet
 
 # too large saved RF models
 reports/models/RF/year/base/RF_model.pkl
