@@ -41,14 +41,14 @@ from visualization.save_plots import *
 
 
 # Random Forest year
-# from RF.model import return_params, build_model, train_model, save_best_params
-# from config.data.split_year_config import *
-# name_model = 'RF'
+from RF.model import return_params, build_model, train_model, save_best_params
+from config.data.split_year_config import *
+name_model = 'RF'
 #  base
-# path_processed = '../../data/tree_models/year/base/processed/'
-# path_params = '../../data/tree_models/year/base/params/'
-# path_results = '../../reports/models/RF/year/base/'
-# optional_features = []
+path_processed = '../../data/tree_models/year/base/processed/'
+path_params = '../../data/tree_models/year/base/params/'
+path_results = '../../reports/models/RF/year/base/'
+optional_features = []
 # spatial
 # path_processed = '../../data/tree_models/year/spatial/processed/'
 # path_params = '../../data/tree_models/year/spatial/params/'
@@ -67,9 +67,9 @@ from visualization.save_plots import *
 
 
 # XGBoost year
-from XGB.model import return_params, build_model, train_model, save_best_params
-from config.data.split_year_config import *
-name_model = 'XGBoost'
+# from XGB.model import return_params, build_model, train_model, save_best_params
+# from config.data.split_year_config import *
+# name_model = 'XGBoost'
  # base
 # path_processed = '../../data/tree_models/year/base/processed/'
 # path_params = '../../data/tree_models/year/base/params/'
@@ -86,15 +86,61 @@ name_model = 'XGBoost'
 # path_results = '../../reports/models/XGB/year/temporal/'
 # optional_features = temporal_features
 # # spatiotemporal
-path_processed = '../../data/tree_models/year/spatiotemporal/processed/'
-path_params = '../../data/tree_models/year/spatiotemporal/params/'
-path_results = '../../reports/models/XGB/year/spatiotemporal/'
-optional_features = spatial_features+temporal_features
+# path_processed = '../../data/tree_models/year/spatiotemporal/processed/'
+# path_params = '../../data/tree_models/year/spatiotemporal/params/'
+# path_results = '../../reports/models/XGB/year/spatiotemporal/'
+# optional_features = spatial_features+temporal_features
+
+
+# Random Forest seasonal balanced year
+# from RF.model import return_params, build_model, train_model, save_best_params
+# name_model = 'RF'
+#  base
+# path_processed = '../../data/tree_models/seasonal_year/base/processed/'
+# path_results = '../../reports/models/RF/seasonal_year/base/'
+# optional_features = []
+# spatial
+# path_processed = '../../data/tree_models/seasonal_year/spatial/processed/'
+# path_results = '../../reports/models/RF/seasonal_year/spatial/'
+# optional_features = spatial_features
+# # temporal
+# path_processed = '../../data/tree_models/seasonal_year/temporal/processed/'
+# path_results = '../../reports/models/RF/seasonal_year/temporal/'
+# optional_features = temporal_features
+# # spatiotemporal
+# path_processed = '../../data/tree_models/seasonal_year/spatiotemporal/processed/'
+# path_results = '../../reports/models/RF/seasonal_year/spatiotemporal/'
+# optional_features = spatial_features+temporal_features
+
+# XGBoost  seasonal balanced year
+# from XGB.model import return_params, build_model, train_model, save_best_params
+# name_model = 'XGBoost'
+ # base
+# path_processed = '../../data/tree_models/seasonal_year/base/processed/'
+# path_results = '../../reports/models/XGB/seasonal_year/base/'
+# optional_features = []
+# # spatial
+# path_processed = '../../data/tree_models/seasonal_year/spatial/processed/'
+# path_results = '../../reports/models/XGB/seasonal_year/spatial/'
+# optional_features = spatial_features
+# # temporal
+# path_processed = '../../data/tree_models/seasonal_year/temporal/processed/'
+# path_results = '../../reports/models/XGB/seasonal_year/temporal/'
+# optional_features = temporal_features
+# # spatiotemporal
+# path_processed = '../../data/tree_models/seasonal_year/spatiotemporal/processed/'
+# path_results = '../../reports/models/XGB/seasonal_year/spatiotemporal/'
+# optional_features = spatial_features+temporal_features
 
 # ======== function ==============
 def load_npz(path):
     data = np.load(path)
     return data['X'], data['y'], data['mask']
+
+# load_npz def version for seasonal balanced dataset
+# def load_npz(path):
+#     data = np.load(path)
+#     return data['X'], data['y'], data['mask'], data['time']
 
 def restore_masked_grid(mask, samples, time, H, W):
     bias_pred = np.full(mask.shape, np.nan)
@@ -114,9 +160,15 @@ X_train, y_train, mask_train = load_npz(path_processed + 'train.npz')
 X_val, y_val, mask_val = load_npz(path_processed + 'val.npz')
 X_test, y_test, mask_test = load_npz(path_processed + 'test.npz')
 
+# load for seasonal balanced dataset
+# X_train, y_train, mask_train, _ = load_npz(path_processed + 'train.npz')
+# X_val, y_val, mask_val, _ = load_npz(path_processed + 'val.npz')
+# X_test, y_test, mask_test, time_test = load_npz(path_processed + 'test.npz')
+
 T2_wrf_test = np.load(path_processed+'t2_wrf_test.npy')
 T2_era5_test = np.load(path_processed+'t2_era5_test.npy')
 
+# for seasonal balanced dataset should comment next two lines
 time_lagged = np.load(path_params+'time_lagged.npy')
 time_test_mask = np.load(path_processed+'ml_time_mask.npy')
 
@@ -136,13 +188,18 @@ train_model(best_model, X_train, y_train, X_val, y_val)
 test_pred = best_model.predict(X_test)
 
 # #============= restore test data =============================
+# for seasonal balanced dataset should comment next two lines
 test_mask = ((time_lagged >= test_start_dt) & (time_lagged <= test_end_dt))
 T_test= len(time_lagged[test_mask])
+
+# for seasonal balanced dataset
+# T_test = len(time_test)
 
 test_pred_restored = restore_masked_grid(mask_test, test_pred, T_test, H, W)
 y_test_restored = restore_masked_grid(mask_test, y_test, T_test, H, W)
 mask_test_reshaped = mask_test.reshape(T_test, H, W)
 
+# for seasonal balanced dataset should comment next three lines
 test_pred_restored = test_pred_restored[time_test_mask]
 y_test_restored = y_test_restored[time_test_mask]
 mask_test_reshaped = mask_test_reshaped[time_test_mask]

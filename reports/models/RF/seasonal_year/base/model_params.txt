@@ -1,0 +1,10 @@
+Optimized params by Optuna:
+n_estimators: 490
+max depth: 20
+max features: sqrt
+min samples leaf: 2
+min_samples_split: 8
+
+Fixed params:
+n jobs: 8
+random state: 42

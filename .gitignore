@@ -28,6 +28,26 @@ reports/models/ConvLSTM/year/spatial/model.pth
 reports/models/ConvLSTM/year/temporal/model.pth
 reports/models/ConvLSTM/year/spatiotemporal/model.pth
 
+# models trained in seasonal dataset
+# too large saved RF models
+reports/models/RF/seasonal_year/base/RF_model.pkl
+reports/models/RF/seasonal_year/spatial/RF_model.pkl
+reports/models/RF/seasonal_year/temporal/RF_model.pkl
+reports/models/RF/seasonal_year/spatiotemporal/RF_model.pkl
+
+# too large saved XGB models
+reports/models/XGB/seasonal_year/base/XGBoost_model.pkl
+reports/models/XGB/seasonal_year/spatial/XGBoost_model.pkl
+reports/models/XGB/seasonal_year/temporal/XGBoost_model.pkl
+reports/models/XGB/seasonal_year/spatiotemporal/XGBoost_model.pkl
+
+
+# too large saved ConvLSTM models
+reports/models/ConvLSTM/seasonal_year/base/model.pth
+reports/models/ConvLSTM/seasonal_year/spatial/model.pth
+reports/models/ConvLSTM/seasonal_yearr/temporal/model.pth
+reports/models/ConvLSTM/seasonal_year/spatiotemporal/model.pth
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

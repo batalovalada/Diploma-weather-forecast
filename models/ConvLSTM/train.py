@@ -35,9 +35,30 @@ from visualization.save_plots import *
 # path_results = '../../reports/models/ConvLSTM/year/temporal/'
 
 # # spatiotemporal
-path_processed = '../../data/ConvLSTM/year/spatiotemporal/processed/'
-path_norm = '../../data/ConvLSTM/year/spatiotemporal/norm_params/'
-path_results = '../../reports/models/ConvLSTM/year/spatiotemporal/'
+# path_processed = '../../data/ConvLSTM/year/spatiotemporal/processed/'
+# path_norm = '../../data/ConvLSTM/year/spatiotemporal/norm_params/'
+# path_results = '../../reports/models/ConvLSTM/year/spatiotemporal/'
+
+# year in seasonal balanced dataset
+# base
+# path_processed = '../../data/ConvLSTM/seasonal_year/base/processed/'
+# path_norm = '../../data/ConvLSTM/seasonal_year/base/norm_params/'
+# path_results = '../../reports/models/ConvLSTM/seasonal_year/base/'
+
+# # spatial
+# path_processed = '../../data/ConvLSTM/seasonal_year/spatial/processed/'
+# path_norm = '../../data/ConvLSTM/seasonal_year/spatial/norm_params/'
+# path_results = '../../reports/models/ConvLSTM/seasonal_year/spatial/'
+#
+# # temporal
+# path_processed = '../../data/ConvLSTM/seasonal_year/temporal/processed/'
+# path_norm = '../../data/ConvLSTM/seasonal_year/temporal/norm_params/'
+# path_results = '../../reports/models/ConvLSTM/seasonal_year/temporal/'
+
+# # spatiotemporal
+path_processed = '../../data/ConvLSTM/seasonal_year/spatiotemporal/processed/'
+path_norm = '../../data/ConvLSTM/seasonal_year/spatiotemporal/norm_params/'
+path_results = '../../reports/models/ConvLSTM/seasonal_year/spatiotemporal/'
 
 # change in convlstm.py INPUT_DIM to 11, 13, 15, 17
 
