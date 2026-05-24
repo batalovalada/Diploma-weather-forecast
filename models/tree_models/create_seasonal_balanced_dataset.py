@@ -7,7 +7,7 @@ from config.data.split_seasonal_year_config import *
 # from config.data.split_next_year_test_config import test_blocks
 
 path_selected = '../../data/preprocessed/year/selected/'
-# path_selected = '../../data/preprocessed/next_year_test/selected/'
+# path_selected = '../../data/preprocessed/next_year_test_seasonal_norm/selected/'
 # ============= paths =======================
 
 # year base !!!
@@ -25,16 +25,16 @@ path_processed = '../../data/tree_models/seasonal_year/spatiotemporal/processed/
 
 # 2021 test
 # year base !!!
-# path_processed = '../../data/tree_models/next_year_test/base/processed/'
+# path_processed = '../../data/tree_models/next_year_test_seasonal_norm/base/processed/'
 
 # year spatial !!!
-# path_processed = '../../data/tree_models/next_year_test/spatial/processed/'
+# path_processed = '../../data/tree_models/next_year_test_seasonal_norm/spatial/processed/'
 
 # year temporal !!!
-# path_processed = '../../data/tree_models/next_year_test/temporal/processed/'
+# path_processed = '../../data/tree_models/next_year_test_seasonal_norm/temporal/processed/'
 
 # year spatiotemporal !!!
-# path_processed = '../../data/tree_models/next_year_test/spatiotemporal/processed/'
+# path_processed = '../../data/tree_models/next_year_test_seasonal_norm/spatiotemporal/processed/'
 
 #===========functions =========================
 def create_block_lags(ds, target, time_blocks):
